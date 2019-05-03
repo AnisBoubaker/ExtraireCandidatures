@@ -42,14 +42,15 @@ do
 	#Parsing du nom de fichier pour créer un dossier de même nom (sans l'exeention)
 	nom_dossier=${file##*/}
 	nom_dossier=${nom_dossier%.eml}
+	nom_dossier=${nom_dossier// /_}
 	#Suppression du dossier si il existe
 	rm -Rf ./$nom_dossier 2>/dev/null
 	#Création du dossier
 	mkdir $nom_dossier
 	#Extraction du contenu du fichier eml dans le nouveau dossier
-	cp $file $nom_dossier
-	munpack -f -q -C $nom_dossier $file >/dev/null
-	rm $nom_dossier/$file
+	cp "$file" $nom_dossier
+	munpack -f -q -C $nom_dossier "$file" >/dev/null
+	rm $nom_dossier/"$file"
 	rm $nom_dossier/part1
 	mv $nom_dossier/part1.desc $nom_dossier/message_courriel.txt
 	for un_zip in ./$nom_dossier/*.zip;
